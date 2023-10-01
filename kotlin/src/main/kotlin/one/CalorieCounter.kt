@@ -2,22 +2,38 @@ package one
 
 data class Bag(val calories: List<Int>) {
     fun totalCalories(): Int { return calories.sum() }
+
+    companion object {
+        fun parseBag(elfsString: String): Bag {
+            val individualCaloriesStr = elfsString.split("\n")
+            val individualCalories = individualCaloriesStr.mapNotNull { it.toIntOrNull() }
+            return Bag(individualCalories)
+        }
+    }
+}
+
+data class Elves(val bags: List<Bag>) {
+    fun topN(n: Int): Elves {
+        return Elves(bags.sortedByDescending { it.totalCalories() }.take(n))
+    }
+
+    fun topNTotalCalories(n: Int): Int = topN(n).bags.sumOf { it.totalCalories() }
+
+    companion object {
+        fun parseBags(input: String): Elves {
+            val strPerElf = input.split("\n\n")
+            return Elves(strPerElf.map { Bag.parseBag(it) })
+        }
+    }
 }
 
 object CalorieCounter {
     fun findMaxCalories(input: String): Int {
-        val bags = parseBags(input)
-        return bags.maxOf { it.totalCalories() }
+        return topCalories(input, 1)
     }
 
-    fun parseBags(input: String): List<Bag> {
-        val strPerElf = input.split("\n\n")
-        return strPerElf.map { parseBag(it) }
-    }
-
-    fun parseBag(elfsString: String): Bag {
-        val individualCaloriesStr = elfsString.split("\n")
-        val individualCalories = individualCaloriesStr.mapNotNull { it.toIntOrNull() }
-        return Bag(individualCalories)
+    fun topCalories(input: String, n: Int): Int {
+        val elves = Elves.parseBags(input)
+        return elves.topNTotalCalories(n)
     }
 }
