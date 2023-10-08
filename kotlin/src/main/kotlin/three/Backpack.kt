@@ -1,5 +1,7 @@
 package three
 
+import common.GenericParser
+
 data class Backpack(val items: List<Item>) {
     private val halves = items.withIndex().partition { it.index < items.size / 2 }
 
@@ -14,6 +16,7 @@ data class Backpack(val items: List<Item>) {
             Backpack(itemsString.map { c -> Item(c) })
 
         fun parseMultiple(totalString: String): List<Backpack> =
-            totalString.split("\n").map { parse(it) }
+            GenericParser.parseRows(totalString, {parse(it)})
+
     }
 }

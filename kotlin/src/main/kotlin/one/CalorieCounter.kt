@@ -1,5 +1,7 @@
 package one
 
+import common.GenericParser
+
 data class Bag(val calories: List<Int>) {
     fun totalCalories(): Int { return calories.sum() }
 
@@ -21,8 +23,8 @@ data class Elves(val bags: List<Bag>) {
 
     companion object {
         fun parseBags(input: String): Elves {
-            val strPerElf = input.split("\n\n")
-            return Elves(strPerElf.map { Bag.parseBag(it) })
+            val rows = GenericParser.parseRows(input, { Bag.parseBag(it) }, "\n\n")
+            return Elves(rows)
         }
     }
 }

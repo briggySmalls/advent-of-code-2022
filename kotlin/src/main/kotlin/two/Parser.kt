@@ -1,15 +1,15 @@
 package two
 
+import common.GenericParser
+
 object Parser {
     fun parse(input: String): List<Pair<Choice, Choice>> {
-        val rows = input.split("\n")
-        val pairs = rows.map { parseRow(it) { g -> parseGroups(g) } }
+        val pairs = GenericParser.parseRows(input, { parseRow(it) { g -> parseGroups(g) } })
         return pairs.map { it!! }
     }
 
     fun parseWithOutcomes(input: String): List<Pair<Choice, Outcome>> {
-        val rows = input.split("\n")
-        val pairs = rows.map { parseRow(it) { g -> parseWithOutcomes(g) } }
+        val pairs = GenericParser.parseRows(input, { parseRow(it) { g -> parseWithOutcomes(g) } })
         return pairs.map { it!! }
     }
 
