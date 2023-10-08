@@ -9,8 +9,13 @@ object RangeService {
     fun parse(input: String): List<Pair<Range, Range>> =
         GenericParser.parseRows(input, { parseRow(it) })
 
-    fun countOverlaps(ranges: List<Pair<Range, Range>>): Int {
-        val encloseStatuses = ranges.map { it.first.encloses(it.second) }
+    fun countCompletelyEncloses(ranges: List<Pair<Range, Range>>): Int {
+        val encloseStatuses = ranges.map { it.first.completelyEncloses(it.second) }
         return encloseStatuses.count { it != EnclosesStatus.NEITHER }
+    }
+
+    fun countPartiallyEncloses(ranges: List<Pair<Range, Range>>): Int {
+        val encloseStatuses = ranges.map { it.first.partiallyEncloses(it.second) }
+        return encloseStatuses.count { it }
     }
 }
