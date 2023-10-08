@@ -17,6 +17,5 @@ data class Backpack(val items: List<Item>) {
 
         fun parseMultiple(totalString: String): List<Backpack> =
             GenericParser.parseRows(totalString, {parse(it)})
-
     }
 }
